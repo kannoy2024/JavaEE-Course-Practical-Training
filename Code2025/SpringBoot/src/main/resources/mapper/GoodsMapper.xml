@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--mapper.xml用来实现方法，写sql语句-->
+<mapper namespace="com.example.mapper.GoodsMapper">
+    <select id="selectAll" resultType="com.example.entity.Goods">
+        select * from `goods`
+        <where>
+            <if test="gname != null and gname != ''">
+                and gname like concat('%',#{gname},'%')
+            </if>
+        </where>
+        order by id desc
+    </select>
+
+    <insert id="insert">
+        insert into `goods` (gname,price,num,content,time,img,supplier_id)
+        values(#{gname},#{price},#{num},#{content},#{time},#{img},#{supplierId})
+    </insert>
+
+    <delete id="deleteById">
+        delete from `goods` where id = #{id}
+    </delete>
+
+    <update id="updateById">
+        UPDATE `goods`
+        SET
+        id = #{id},
+        gname= #{gname},
+        price = #{price},
+        num = #{num},
+        content = #{content},
+        time = #{time},
+        img = #{img},
+        supplier_id = #{supplierId}
+        WHERE id = #{id}
+    </update>
+
+    <select id="selectById">
+        select * from `goods`
+        where
+        id = #{id}
+    </select>
+</mapper>

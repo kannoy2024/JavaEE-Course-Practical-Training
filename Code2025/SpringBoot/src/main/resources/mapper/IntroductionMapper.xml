@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--mapper.xml用来实现方法，写sql语句-->
+<mapper namespace="com.example.mapper.IntroductionMapper">
+    <select id="selectAll" resultType="com.example.entity.Introduction">
+        select * from `introduction`
+        <where>
+            <if test="title != null and title != ''">
+                and title like concat('%',#{title},'%')
+            </if>
+        </where>
+        order by id desc
+    </select>
+
+    <insert id="insert">
+        insert into `introduction` (img,title,content,time,category_id)
+        values(#{img},#{title},#{content},#{time},#{categoryId})
+    </insert>
+
+    <delete id="deleteById">
+        delete from `introduction` where id = #{id}
+    </delete>
+
+    <update id="updateById">
+        UPDATE `introduction`
+        SET
+        id = #{id},
+        img = #{img},
+        title= #{title},
+        content = #{content},
+        time = #{time},
+        category_id = #{categoryId}
+        WHERE id = #{id}
+    </update>
+</mapper>

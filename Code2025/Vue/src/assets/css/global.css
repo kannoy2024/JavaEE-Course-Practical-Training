@@ -1,0 +1,25 @@
+/*设置全部的网页元素为盒状模型*/
+*{
+    box-sizing: border-box;
+}
+
+/*网页的根元素*/
+body{
+    /*设置边界为零，这样就可以紧紧贴着边缘了*/
+    margin: 0;
+    padding: 0;
+    /*颜色设置为黑*/
+    color: #333;
+    font-size: 14px;
+}
+
+a{
+    text-decoration:none;
+}
+
+.card{
+    background-color: white;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 8px rgba(0,0,0, .12);
+}

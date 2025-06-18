@@ -1,0 +1,36 @@
+密码：123456
+
+MariaDB:111111
+mariadb-11.4.4-winx64
+
+mysql-installer-community-8.0.41.0
+MySQL：123456
+
+
+<user username="tomcat" password="123456" roles="admin-gui"/>
+http://localhost:8080/1servlet/servlet/HelloWorld
+
+git config --global http.proxy 127.0.0.1:7897
+git config --global https.proxy 127.0.0.1:7897
+
+
+Zachary Huang​
+Zachary_Huang
+Zachary-Huang
+
+git branch
+git checkout main
+git merge 第六次作业
+
+
+50250246
+
+jdbc基本连接，mysql
+  connection = factory.getConnection(
+                "com.mysql.cj.jdbc.Driver",
+                "jdbc:mysql://localhost:3306/？？？？？",
+                "root",
+                "123456"
+            );
+mysql.driver = com.mysql.cj.jdbc.Driver
+mysql.url=jdbc:mysql://localhost:3306/？？？？

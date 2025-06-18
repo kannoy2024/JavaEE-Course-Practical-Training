@@ -1,0 +1,23 @@
+server:
+  port: 9999  # 端口号
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: 'root'
+    password: '123456'
+    url: jdbc:mysql://localhost:3306/javaeetest?serverTimezone=UTC&characterEncoding=utf8&useUnicode=true&useSSL=false&allowMultiQueries=true&allowPublicKeyRetrieval=true
+  servlet:
+    multipart:
+      max-file-size: 200MB #支持处理的文件的最大大小
+      max-request-size: 200MB
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: true
+    database-id: mysql  # 明确指定方言
+  logging:
+    level:
+      com.example.mapper: trace

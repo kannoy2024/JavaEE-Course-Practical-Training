@@ -1,0 +1,9 @@
+@forward "element-plus/theme-chalk/src/common/var.scss" with (
+  $colors:(
+    "perimary":("base":rgba(7, 188, 119, 0.31)),
+    "success":("base":#18a80f),
+    "warning":("base":rgba(244,176,3,0.94)),
+    "danger":("base":rgba(237,8,53,0.94)),
+    "info":("base":rgba(8, 192, 216, 0.53)),
+  )
+);

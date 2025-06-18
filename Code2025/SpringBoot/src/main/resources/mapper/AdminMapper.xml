@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--mapper.xml用来实现方法，写sql语句-->
+<mapper namespace="com.example.mapper.AdminMapper">
+
+    <!--更新的数据库-->
+    <update id="updateById">
+        UPDATE `admin`
+        SET
+        username = #{username},
+        password = #{password},
+        name = #{name},
+        phone = #{phone},
+        email = #{email},
+        role = #{role},
+        avatar = #{avatar}
+        WHERE id = #{id}
+    </update>
+
+
+    <!--从admin表查询，倒序排序-->
+    <select id="selectAll" resultType="com.example.entity.Admin">
+        select * from `admin`
+        <!--Mybatis的where标签自带where，在查询语句里面就不要再加where了-->
+        <where>
+            <if test="name != null and name != '' ">
+                <!--用户姓名模糊查询-->
+                name like concat('%',#{name},'%')
+            </if>
+            <if test="username != null and username != '' ">
+                <!--用户账号模糊查询-->
+                and username like concat('%',#{username},'%')
+            </if>
+            <if test="ids !=null and ids != '' ">
+                and id in
+                <!--这个是循环，根据选择项导出-->
+                <foreach collection="idsArr" open="(" close=")" separator="," item="id">
+                    #{id}
+                </foreach>
+            </if>
+        </where>
+        order by id desc
+    </select>
+
+    <!--插入的数据库-->
+    <insert id="insert">
+        insert into `admin` (username,password,name,phone,email,role,avatar)
+        values (#{username},#{password},#{name},#{phone},#{email},#{role},#{avatar})
+    </insert>
+
+    <!--根据用户名查询管理员-->
+    <select id="selectByUserName" resultType="com.example.entity.Admin">
+        select * from admin
+        where username = #{username}
+    </select>
+
+    <!--根据ID删除管理员-->
+    <delete id="deleteById">
+        delete from `admin` where id = #{id}
+    </delete>
+
+    <select id="selectById" resultType="com.example.entity.Admin">
+        select * from admin
+        where
+        id = #{id}
+    </select>
+
+</mapper>
