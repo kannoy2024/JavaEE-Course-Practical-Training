@@ -18,11 +18,14 @@
             @click="router.push('/manager/home')"
             class="rainbow-text logo-text;breadcrumb-item"
         >
-          ~~~~首页~~~~
+          首页————>
         </span>
         <!-- 当前页面名称 -->
         <span class="current-page">
           {{ router.currentRoute.value.meta.name }}
+        </span>
+        <span class="current-page">
+          当前角色类型 {{ data.user.role }}
         </span>
       </div>
       <!-- 用户信息区域 -->
@@ -33,6 +36,7 @@
             <img v-if="data.user?.avatar" style="width: 40px;height: 40px;border-radius: 50%" :src="data.user?.avatar"/>
             <Avatar v-else class="user-avatar"/>
             <span>{{ data.user?.name }}</span>
+
           </div>
           <!-- 下拉菜单 -->
           <template #dropdown>
@@ -64,7 +68,7 @@
             </el-icon>
             <span>首页</span>
           </el-menu-item>
-          <el-menu-item index="/manager/supplier" v-if="data.user.role === 'ADMIN'">
+          <el-menu-item index="/manager/supplier" v-if="data.user.role === 'ADMIN'||data.user.role === 'USER'">
             <el-icon>
               <User/>
             </el-icon>
@@ -82,8 +86,11 @@
             </el-icon>
             <span>订单信息</span>
           </el-menu-item>
-          <el-menu-item index="/manager/category">
-            <span>攻略分类</span>
+          <el-menu-item index="/manager/recharge">
+            <el-icon>
+              <Position/>
+            </el-icon>
+            <span>充值中心</span>
           </el-menu-item>
           <el-menu-item index="/manager/admin" v-if="data.user.role === 'ADMIN'">
             <el-icon>
@@ -124,12 +131,6 @@
             </el-icon>
             <span>修改密码</span>
           </el-menu-item>
-          <el-menu-item index="/manager/introduction">
-            <el-icon>
-              <Position/>
-            </el-icon>
-            <span>鸣潮攻略</span>
-          </el-menu-item>
         </el-menu>
       </div>
       <!-- 菜单区域结束 -->
@@ -145,16 +146,14 @@
 </template>
 
 <script setup>
-// ==================== 依赖导入 ====================
-import {reactive} from 'vue'
-import router from '@/router/index.js' // ==================== 响应式数据 ====================
 
-// ==================== 响应式数据 ====================
+import {reactive} from 'vue'
+import router from '@/router/index.js'
+
 const data = reactive({
   user: JSON.parse(localStorage.getItem('CodeUser') || '{}')
 })
 
-// ==================== 方法 ====================
 /**
  * 退出登录处理
  */

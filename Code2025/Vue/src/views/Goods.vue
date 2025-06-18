@@ -12,7 +12,9 @@
       />
       <el-button type="primary" @click="load">查询</el-button>
       <el-button @click="reset">重置</el-button>
-      <el-button type="primary" @click="handleAdd">新增</el-button>
+      <el-button type="primary" @click="handleAdd" v-if="data.user.role === 'ADMIN'||data.user.role === 'SUPPLIER'">
+        新增
+      </el-button>
       <el-button type="primary" @click="handlePurchase">下单</el-button>
     </div>
 
@@ -47,7 +49,7 @@
         <el-table-column label="商品价格" prop="price"/>
         <el-table-column label="发布时间" prop="time"/>
 
-        <el-table-column label="操作" width="100">
+        <el-table-column label="操作" width="100" v-if="data.user.role === 'ADMIN'||data.user.role === 'SUPPLIER '">
           <template #default="scope">
             <el-button circle icon="Edit" type="primary" @click="handleEdit(scope.row)"/>
             <el-button circle icon="Delete" type="danger" @click="del(scope.row.id)"/>
@@ -76,7 +78,7 @@
         <el-form
             ref="formRef"
             :model="data.form"
-            label-width="80px"
+            label-width="100px"
             style="padding: 20px 30px 20px 0;"
         >
           <el-form-item label="商品名称" prop="gname">
@@ -195,13 +197,16 @@ import {ElMessage, ElMessageBox} from "element-plus";
 
 const formRef = ref()
 
-// 处理购买按钮点击
+// 处理下单点击
 const handlePurchase = () => {
   if (data.selectedGoods.length === 0) {
     ElMessage.warning('请至少选择一件商品')
     return
   }
-
+  if (data.user.role !== 'USER') {
+    ElMessage.error('只有用户角色能够下单')
+    return
+  }
   // 初始化数量
   data.selectedGoods.forEach(item => {
     item.quantity = 1
@@ -225,10 +230,12 @@ const totalQuantity = computed(() => {
     return total + (item.quantity || 1)
   }, 0)
 })
+
 // 处理表格选择变化
 const handleSelectionChange = (rows) => {
   data.selectedGoods = rows.map(row => ({...row}))
 }
+
 // 确认下单
 const confirmOrder = async () => {
   const userId = data.user.id
@@ -238,7 +245,7 @@ const confirmOrder = async () => {
   // 构造订单数据
   const orderItems = data.selectedGoods.map(item => ({
     orderNo: orderNo,
-    useId: userId,
+    userId: userId,
     goodId: item.id,
     supplierId: item.supplierId,
     buyQuantity: item.quantity,
@@ -309,13 +316,21 @@ const handleCreated = (editor) => {
 }
 //wangEditor初始化结束
 
+
 const load = () => {
+  let params = {
+    pageNum: data.pageNum,
+    pageSize: data.pageSize,
+    gname: data.gname
+  };
+
+  // 添加供应商ID过滤条件
+  if (data.user.role === 'SUPPLIER') {
+    params.supplierId = data.user.id;
+  }
+
   request.get('/goods/selectPage', {
-    params: {
-      pageNum: data.pageNum,
-      pageSize: data.pageSize,
-      gname: data.gname
-    }
+    params: params
   }).then(res => {
     if (res.code === '200') {
       data.tableData = res.data?.list
@@ -334,6 +349,10 @@ const reset = () => {
 
 const handleAdd = () => {
   data.form = {}
+  // 如果是供应商角色，自动设置供应商ID
+  if (data.user.role === 'SUPPLIER') {
+    data.form.supplierId = data.user.id
+  }
   data.formVisible = true
 }
 

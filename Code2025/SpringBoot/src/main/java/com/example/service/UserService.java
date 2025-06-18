@@ -21,22 +21,22 @@ public class UserService {
     @Resource
     UserMapper userMapper;
 
-    public void add(User user) {
+    public void add(Account account) {
         //根据新的账号查询数据库
-        User dbUser = userMapper.selectByUserName(user.getUsername());
+        User dbUser = userMapper.selectByUserName(account.getUsername());
         if (dbUser != null) {
             throw new CustomerException("账号重复");
         }
         //提供默认名称,把账号作为默认名称
-        if (StrUtil.isBlank(user.getName())) {
-            user.setName(user.getUsername());
+        if (StrUtil.isBlank(account.getName())) {
+            account.setName(account.getUsername());
         }
         //提供默认密码
-        if (StrUtil.isBlank(user.getPassword())) {
-            user.setPassword("112233");
+        if (StrUtil.isBlank(account.getPassword())) {
+            account.setPassword("123");
         }
-        user.setRole("USER");//设置对应角色
-        userMapper.insert(user);
+        account.setRole("USER");//设置对应角色
+        userMapper.insert(account);
     }
 
     @Transactional
@@ -76,9 +76,9 @@ public class UserService {
         }
     }
 
-    public void register(User user) {
+    public void register(Account account) {
         // 注册就是新增嘛
-        this.add(user);//调用一下新增
+        this.add(account);//调用一下新增
     }
 
     public User selectById(String userId) {

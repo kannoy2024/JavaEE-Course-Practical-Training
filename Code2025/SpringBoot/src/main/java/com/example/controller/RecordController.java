@@ -53,4 +53,14 @@ public class RecordController {
         PageInfo<Record> pageInfo = recordService.selectPage(pageNum, pageSize, record, userId, supplierId);
         return Result.success(pageInfo);
     }
+
+    @PostMapping("/complete/{id}")
+    public Result completeOrder(@PathVariable Integer id) {
+        try {
+            recordService.completeOrder(id);
+            return Result.success();
+        } catch (Exception e) {
+            return Result.error(e.getMessage());
+        }
+    }
 }

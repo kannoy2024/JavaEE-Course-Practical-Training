@@ -13,4 +13,8 @@ public interface RecordMapper {
     void insert(Record record);
 
     void insertBatch(@Param("list") List<Record> records);
+    //更新订单状态
+    void updateStatus(@Param("id") Integer id, @Param("status") String status);
+
+    Record selectByOrderId(@Param("id") Integer id);
 }

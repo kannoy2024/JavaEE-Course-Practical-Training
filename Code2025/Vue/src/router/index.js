@@ -67,6 +67,11 @@ const router = createRouter({
                     meta: {name: '攻略分类'},
                     component: () => import('../views/Category.vue')
                 },
+                {
+                    path: 'recharge',
+                    meta: {name: '充值中心'},
+                    component: () => import('../views/Recharge.vue')
+                },
 
             ]
         },

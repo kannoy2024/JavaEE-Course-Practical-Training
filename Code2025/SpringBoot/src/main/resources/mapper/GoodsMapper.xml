@@ -6,13 +6,16 @@
 <!--mapper.xml用来实现方法，写sql语句-->
 <mapper namespace="com.example.mapper.GoodsMapper">
     <select id="selectAll" resultType="com.example.entity.Goods">
-        select * from `goods`
+        SELECT * FROM goods
         <where>
             <if test="gname != null and gname != ''">
-                and gname like concat('%',#{gname},'%')
+                AND gname LIKE CONCAT('%', #{gname}, '%')
+            </if>
+            <if test="supplierId != null">
+                AND supplier_id = #{supplierId}
             </if>
         </where>
-        order by id desc
+        ORDER BY time DESC
     </select>
 
     <insert id="insert">
@@ -43,4 +46,8 @@
         where
         id = #{id}
     </select>
+
+    <update id="updateStock">
+        UPDATE goods SET num = #{num} WHERE id = #{id}
+    </update>
 </mapper>

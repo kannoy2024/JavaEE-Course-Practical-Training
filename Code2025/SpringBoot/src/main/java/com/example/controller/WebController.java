@@ -2,7 +2,6 @@ package com.example.controller;
 
 import com.example.common.Result;
 import com.example.entity.Account;
-import com.example.entity.User;
 import com.example.service.AdminService;
 import com.example.service.SupplierService;
 import com.example.service.UserService;
@@ -45,8 +44,12 @@ public class WebController {
     }
 
     @PostMapping("/register")
-    public Result register(@RequestBody User user) {
-        userService.register(user);
+    public Result register(@RequestBody Account account) {
+        if ("USER".equals(account.getRole())) {
+            userService.register(account);
+        } else if ("SUPPLIER".equals(account.getRole())) {
+            supplierService.register(account);
+        }
         return Result.success();
     }
 

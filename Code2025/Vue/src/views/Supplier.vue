@@ -34,11 +34,12 @@
                       style="width: 40px;height:40px;border-radius: 50%;display: block"/>
           </template>
         </el-table-column>
-        <el-table-column prop="username" label="账号"/>
-        <el-table-column prop="name" label="名称"/>
+        <el-table-column prop="username" label="账号"
+                         v-if="data.user.role === 'ADMIN'||data.user.role === 'SUPPLIER '"/>
+        <el-table-column prop="name" label="供应商名称"/>
         <el-table-column prop="phone" label="电话"/>
         <el-table-column prop="email" label="邮箱"/>
-        <el-table-column label="操作">
+        <el-table-column label="操作" v-if="data.user.role === 'ADMIN'||data.user.role === 'SUPPLIER '">
           <template #default="scope">
             <el-button icon="Edit" type="primary" circle @click="handleEdit(scope.row)"></el-button>
             <el-button icon="Delete" type="danger" circle @click="del(scope.row.id)"></el-button>

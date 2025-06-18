@@ -1,5 +1,7 @@
 package com.example.entity;
 
+import java.math.BigDecimal;
+
 //普通用户信息
 public class User extends Account {
     private Integer id;
@@ -10,8 +12,8 @@ public class User extends Account {
     private String email;
     private String role;
     private String token;
-
     private String avatar;
+    private BigDecimal balance;
 
     //    非数据库字段，用来选择查询的
     private String ids;
@@ -105,5 +107,13 @@ public class User extends Account {
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
+    }
+
+    public BigDecimal getBalance() {
+        return balance;
+    }
+
+    public void setBalance(BigDecimal balance) {
+        this.balance = balance;
     }
 }

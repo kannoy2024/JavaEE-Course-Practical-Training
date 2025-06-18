@@ -44,12 +44,20 @@ public class GoodsService {
     }
 
     public PageInfo<Goods> selectPage(Integer pageNum, Integer pageSize, Goods goods) {
-        //        开启分页查询
+        // 获取当前登录用户
+        Account currentUser = TokenUtils.getCurrentUser();
+
+        // 如果是供应商角色，设置查询条件中的supplierId为当前用户ID
+        if (currentUser != null && "SUPPLIER".equals(currentUser.getRole())) {
+            goods.setSupplierId(currentUser.getId());
+        }
+
+        // 开启分页查询
         PageHelper.startPage(pageNum, pageSize);
         List<Goods> listGoods = goodsMapper.selectAll(goods);
+
         for (Goods dbGoods : listGoods) {
             Integer supplierId = dbGoods.getSupplierId();
-
             String supplierStr = supplierId != null ? supplierId.toString() : null;
 
             Supplier supplier = supplierMapper.selectById(supplierStr);

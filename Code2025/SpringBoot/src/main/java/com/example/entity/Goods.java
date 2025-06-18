@@ -1,11 +1,13 @@
 package com.example.entity;
 
+import java.math.BigDecimal;
+
 /*
  * 系统公告信息*/
 public class Goods {
     private Integer id;
     private String gname;
-    private Integer price;
+    private BigDecimal price;
     private Integer num;
     private String content;
     private String time;
@@ -66,11 +68,11 @@ public class Goods {
         this.gname = gname;
     }
 
-    public Integer getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(Integer price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 

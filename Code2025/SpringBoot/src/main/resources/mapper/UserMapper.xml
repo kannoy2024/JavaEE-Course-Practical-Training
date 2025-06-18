@@ -16,7 +16,8 @@
         phone = #{phone},
         email = #{email},
         role = #{role},
-        avatar = #{avatar}
+        avatar = #{avatar},
+        balance =#{balance}
         WHERE id = #{id}
     </update>
 
@@ -47,8 +48,8 @@
 
     <!--插入的数据库-->
     <insert id="insert">
-        insert into `user` (username,password,name,phone,email,role,avatar)
-        values (#{username},#{password},#{name},#{phone},#{email},#{role},#{avatar})
+        insert into `user` (username,password,name,phone,email,role,avatar,balance)
+        values (#{username},#{password},#{name},#{phone},#{email},#{role},#{avatar},#{balance})
     </insert>
 
     <!--根据用户名查询管理员-->
@@ -63,8 +64,14 @@
     </delete>
 
     <select id="selectById" resultType="com.example.entity.User">
-        select * from user
+        select * from `user`
         where
         id = #{id}
     </select>
+
+    <update id="updateBalance">
+        UPDATE user
+        SET balance = balance + #{amount}
+        WHERE id = #{userId}
+    </update>
 </mapper>

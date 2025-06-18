@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--mapper.xml用来实现方法，写sql语句-->
+<mapper namespace="com.example.mapper.RechargeMapper">
+
+    <select id="selectAll" resultType="com.example.entity.Recharge">
+        SELECT * FROM recharge
+        <where>
+            <if test="userId != null">
+                AND user_id = #{userId}
+            </if>
+        </where>
+        ORDER BY time DESC
+    </select>
+
+    <insert id="insert">
+        insert into `recharge`
+        (user_id, amount, status, time)
+        VALUES(#{userId}, #{amount}, #{status}, #{time})
+    </insert>
+
+    <insert id="insertBatch">
+        INSERT INTO `recharge`
+        (user_id,amount)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (
+            #{item.userId},
+            #{item.amount}
+            )
+        </foreach>
+    </insert>
+
+    <update id="updateStatus">
+        UPDATE `recharge` SET status = #{status} WHERE id = #{id}
+    </update>
+
+    <select id="selectByRechargeId">
+        SELECT * FROM `recharge` WHERE id = #{id}
+    </select>
+    
+    <select id="selectByOrderId" resultType="com.example.entity.Recharge">
+        SELECT
+        id,
+        user_id as userId,
+        amount,
+        status,
+        time
+        FROM recharge
+        WHERE id = #{id}
+    </select>
+
+</mapper>

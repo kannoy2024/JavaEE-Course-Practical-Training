@@ -1,5 +1,6 @@
 package com.example.mapper;
 
+import com.example.entity.Account;
 import com.example.entity.Supplier;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -11,7 +12,7 @@ public interface SupplierMapper {
 
     List<Supplier> selectAll(Supplier supplier);
 
-    void insert(Supplier supplier);
+    void insert(Account account);
 
     Supplier selectByUserName(String username);
 

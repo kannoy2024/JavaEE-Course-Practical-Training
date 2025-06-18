@@ -9,8 +9,8 @@
     <select id="selectAll" resultType="com.example.entity.Record">
         SELECT * FROM record
         <where>
-            <if test="useId != null">
-                AND use_id = #{useId}
+            <if test="userId != null">
+                AND user_id = #{userId}
             </if>
             <if test="supplierId != null">
                 AND supplier_id = #{supplierId}
@@ -24,18 +24,18 @@
 
     <insert id="insert">
         insert into `record`
-        (order_no,use_id,good_id,supplier_id,buy_quantity,unit_price,total_price,time)
-        VALUES(#{orderNo},#{useId},#{goodId},#{supplierId},#{buyQuantity},#{unitPrice},#{totalPrice},#{time})
+        (order_no,user_id,good_id,supplier_id,buy_quantity,unit_price,total_price,time)
+        VALUES(#{orderNo},#{userId},#{goodId},#{supplierId},#{buyQuantity},#{unitPrice},#{totalPrice},#{time})
     </insert>
 
     <insert id="insertBatch">
         INSERT INTO `record`
-        (order_no, use_id, good_id, supplier_id, buy_quantity, unit_price, total_price, time)
+        (order_no, user_id, good_id, supplier_id, buy_quantity, unit_price, total_price, time)
         VALUES
         <foreach collection="list" item="item" separator=",">
             (
             #{item.orderNo},
-            #{item.useId},
+            #{item.userId},
             #{item.goodId},
             #{item.supplierId},
             #{item.buyQuantity},
@@ -45,4 +45,12 @@
             )
         </foreach>
     </insert>
+
+    <update id="updateStatus">
+        UPDATE `record` SET status = #{status} WHERE id = #{id}
+    </update>
+
+    <select id="selectByOrderId">
+        SELECT * FROM `record` WHERE id = #{id}
+    </select>
 </mapper>

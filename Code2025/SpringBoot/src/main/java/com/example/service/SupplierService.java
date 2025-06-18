@@ -21,22 +21,22 @@ public class SupplierService {
     @Resource
     SupplierMapper supplierMapper;
 
-    public void add(Supplier supplier) {
+    public void add(Account account) {
         //根据新的账号查询数据库
-        Supplier dbSupplier = supplierMapper.selectByUserName(supplier.getUsername());
+        Supplier dbSupplier = supplierMapper.selectByUserName(account.getUsername());
         if (dbSupplier != null) {
             throw new CustomerException("账号重复");
         }
         //提供默认名称,把账号作为默认名称
-        if (StrUtil.isBlank(supplier.getName())) {
-            supplier.setName(supplier.getUsername());
+        if (StrUtil.isBlank(account.getName())) {
+            account.setName(account.getUsername());
         }
         //提供默认密码
-        if (StrUtil.isBlank(supplier.getPassword())) {
-            supplier.setPassword("112233");
+        if (StrUtil.isBlank(account.getPassword())) {
+            account.setPassword("123");
         }
-        supplier.setRole("SUPPLIER");//设置对应角色
-        supplierMapper.insert(supplier);
+        account.setRole("SUPPLIER");//设置对应角色
+        supplierMapper.insert(account);
     }
 
     @Transactional
@@ -76,9 +76,9 @@ public class SupplierService {
         }
     }
 
-    public void register(Supplier supplier) {
+    public void register(Account account) {
         // 注册就是新增嘛
-        this.add(supplier);//调用一下新增
+        this.add(account);//调用一下新增
     }
 
     public Supplier selectById(String supplierId) {

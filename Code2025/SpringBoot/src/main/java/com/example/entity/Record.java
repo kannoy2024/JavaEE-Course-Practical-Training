@@ -7,43 +7,14 @@ import java.math.BigDecimal;
 public class Record {
     private Integer id;
     private String orderNo;
-    private Integer useId;
+    private Integer userId;
     private Integer goodId;
     private Integer supplierId;
     private Integer buyQuantity;
     private BigDecimal totalPrice;
     private BigDecimal unitPrice;
     private String time;
-
-    //    非数据库字段
-    private String supplierName;
-    private String userName;
-    private String goodsName;
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getGoodsName() {
-        return goodsName;
-    }
-
-    public void setGoodsName(String goodsName) {
-        this.goodsName = goodsName;
-    }
-
-    public String getSupplierName() {
-        return supplierName;
-    }
-
-    public void setSupplierName(String supplierName) {
-        this.supplierName = supplierName;
-    }
-
+    private String status;//枚举类
 
     public BigDecimal getUnitPrice() {
         return unitPrice;
@@ -78,12 +49,12 @@ public class Record {
         this.id = id;
     }
 
-    public Integer getUseId() {
-        return useId;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setUseId(Integer useId) {
-        this.useId = useId;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     public Integer getGoodId() {
@@ -118,4 +89,58 @@ public class Record {
     public void setTime(String time) {
         this.time = time;
     }
+
+    public enum Status {
+        PROCESSING("处理中"),
+        COMPLETED("已完成");
+
+        private final String value;
+
+        Status(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    //    非数据库字段
+    private String supplierName;
+    private String userName;
+    private String goodsName;
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getGoodsName() {
+        return goodsName;
+    }
+
+    public void setGoodsName(String goodsName) {
+        this.goodsName = goodsName;
+    }
+
+    public String getSupplierName() {
+        return supplierName;
+    }
+
+    public void setSupplierName(String supplierName) {
+        this.supplierName = supplierName;
+    }
+
+
 }

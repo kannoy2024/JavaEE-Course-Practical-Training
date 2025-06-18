@@ -30,51 +30,26 @@ public class AdminController {
     @Resource
     private AdminService adminService;
 
-    /**
-     * 添加管理员
-     *
-     * @param admin 管理员实体，通过@RequestBody接收前端传来的JSON数据
-     * @return 操作结果
-     */
     @PostMapping("/add")
     public Result add(@RequestBody Admin admin) {
-        // 调用服务层添加管理员
         adminService.add(admin);
         return Result.success();
     }
 
-    /**
-     * 更新管理员信息
-     *
-     * @param admin 管理员实体，包含id字段用于标识要更新的记录
-     * @return 操作结果
-     */
+
     @PutMapping("/update")
     public Result update(@RequestBody Admin admin) {
-        // 调用服务层更新管理员信息
         adminService.update(admin);
         return Result.success();
     }
 
-    /**
-     * 删除单个管理员
-     *
-     * @param id 要删除的管理员ID
-     * @return 操作结果
-     */
     @DeleteMapping("/delete/{id}")
     public Result delete(@PathVariable Integer id) {
-        // 调用服务层删除管理员
+
         adminService.deleteById(id);
         return Result.success();
     }
 
-    /**
-     * 批量删除管理员
-     *
-     * @param list 要删除的管理员ID列表
-     * @return 操作结果
-     */
     @DeleteMapping("/deleteAll")
     public Result deleteAll(@RequestBody List<Admin> list) {
         // 调用服务层批量删除管理员
@@ -82,11 +57,6 @@ public class AdminController {
         return Result.success();
     }
 
-    /**
-     * 查询所有管理员
-     *
-     * @return 管理员列表
-     */
     @GetMapping("/selectAll")
     public Result selectAll(Admin admin) {
         // 调用服务层查询所有管理员
@@ -94,14 +64,6 @@ public class AdminController {
         return Result.success(adminList);
     }
 
-    /**
-     * 分页查询管理员
-     *
-     * @param pageNum  当前页码，默认为1
-     * @param pageSize 每页显示数量，默认为10
-     * @param admin    查询条件（可包含username、name等字段）
-     * @return 分页结果
-     */
     @GetMapping("/selectPage")
     public Result selectPage(
             @RequestParam(defaultValue = "1") Integer pageNum,
@@ -112,10 +74,7 @@ public class AdminController {
         return Result.success(pageInfo);
     }
 
-    /*
-     * 数据导出，使用流的方式，输出流
-     * ids:1,2,3,4,5,6
-     * */
+
     @GetMapping("/export")
     public void exportData(Admin admin, HttpServletResponse httpServletResponse) throws Exception {
 //        根据传入的id进行导出

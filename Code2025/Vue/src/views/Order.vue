@@ -1,10 +1,6 @@
 <template>
   <div>
     <div class="card" style="margin-bottom: 5px;">
-      <!-- 角色信息提示 -->
-      <div>
-        当前角色类型 {{ data.user.role }}
-      </div>
       <!-- 查询条件 -->
       <el-input
           v-model="data.username"
@@ -32,7 +28,27 @@
         <el-table-column label="商品单价" prop="unitPrice"/>
         <el-table-column label="商品总价" prop="totalPrice"/>
         <el-table-column label="订单时间" prop="time"/>
-        <el-table-column label="订单状态" prop="" align="center" width="120">
+        <el-table-column label="订单状态" prop="status" align="center" width="120">
+          <template #default="scope">
+            <el-tag
+                :type="scope.row.status === '已完成' ? 'success' :
+                      (scope.row.status === '已取消' ? 'danger' : 'warning')">
+              {{ scope.row.status || '处理中' }}
+            </el-tag>
+          </template>
+        </el-table-column>
+
+        <el-table-column label="操作" width="150" align="center" v-if="data.user.role === 'ADMIN'">
+          <template #default="scope">
+            <el-button
+                v-if="scope.row.status !== '已完成'"
+                type="primary"
+                size="small"
+                @click="completeOrder(scope.row.id)">
+              完成订单
+            </el-button>
+            <span v-else>已完成</span>
+          </template>
         </el-table-column>
       </el-table>
     </div>
@@ -56,24 +72,19 @@
 <script setup>
 import {reactive} from "vue";
 import {Search} from "@element-plus/icons-vue";
+import {ElMessage, ElMessageBox} from 'element-plus';
 import request from "@/utils/request.js";
-import {ElMessage} from "element-plus"; // 表格数据和状态管理
 
-// 表格数据和状态管理
 const data = reactive({
   user: JSON.parse(localStorage.getItem('CodeUser') || "{}"),
   pageNum: 1,
   pageSize: 5,
   total: 0,
   tableData: [],
-  formVisible: false,
-  formLabelWidth: "120px",
-  form: {},
-  rows: [], // 批量操作选中的行
-  ids: []
+  username: '',
+  name: ''
 });
 
-// 加载数据
 const load = () => {
   let params = {
     pageNum: data.pageNum,
@@ -88,29 +99,51 @@ const load = () => {
     params.userId = data.user.id;
   }
 
-  request
-      .get("/record/selectPage", {
-        params: params
-      })
+  request.get("/record/selectPage", {params})
       .then((res) => {
         if (res.code === "200") {
-          data.tableData = res.data.list;
+          data.tableData = res.data.list.map(item => {
+            item.status = item.status || '处理中';
+            return item;
+          });
           data.total = res.data.total;
         } else {
           ElMessage.error(res.msg);
         }
       });
 };
-load();
 
-// 重置查询条件
 const reset = () => {
   data.name = '';
   data.username = '';
   load();
 };
+
+const completeOrder = (id) => {
+  ElMessageBox.confirm('确认要完成此订单吗?', '提示', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning'
+  }).then(() => {
+    request.post(`/record/complete/${id}`)
+        .then(res => {
+          if (res.code === '200') {
+            ElMessage.success('订单已完成');
+            load();
+          } else {
+            ElMessage.error(res.msg);
+          }
+        })
+        .catch(err => {
+          ElMessage.error('操作失败: ' + (err.response?.data?.msg || err.message));
+        });
+  }).catch(() => {
+  });
+};
+
+load();
 </script>
 
 <style>
-/* 可在此处添加样式 */
+
 </style>
